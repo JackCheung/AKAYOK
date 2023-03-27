@@ -4,22 +4,6 @@
 		<meta charset="utf-8">
 		<title>AKAYOK</title>
 		<script charset="UTF-8" src="/tj.js"></script>
-		<script>
-			var type = navigator.appName; //BOM对象获取浏览器名称
-			if (type == "Netscape") {
-				var lang = navigator.language.toLowerCase(); //获取浏览器配置语言，支持非IE浏览器
-			} else {
-				var lang = navigator.browserLanguage.toLowerCase(); //获取浏览器配置语言，支持IE5+
-			};
-			var lang = lang.substr(0, 5); //获取浏览器配置语言前4位
-			if (lang !== "zh-cn") {
-				// 不是中文浏览器
-				window.location.replace('/en.html');
-			} else {
-				// 中文浏览器
-				window.location.replace('/zh.html');
-			}
-		</script>
 		<style>
 			body {
 				font: 16px arial, 'Microsoft Yahei', 'Hiragino Sans GB', sans-serif;
