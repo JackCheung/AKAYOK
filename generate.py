@@ -3,9 +3,9 @@
 网站生成器主入口脚本
 
 使用方法:
-    python generate.py [--source excel|feishu]
+    python generate.py [--source excel|feishu] [--template jinja2|legacy]
 
-默认从 飞书多维表格 读取数据
+默认从 飞书多维表格 读取数据，默认使用 Jinja2 模板
 """
 
 import sys
@@ -18,6 +18,7 @@ sys.path.insert(0, str(Path(__file__).parent))
 from src.excel_reader import ExcelDataReader
 from src.feishu_api import FeishuDataReader
 from src.generator import WebsiteGenerator
+from src.generator_j2 import Jinja2WebsiteGenerator
 
 
 def main():
@@ -28,6 +29,13 @@ def main():
         default="feishu",
         choices=["excel", "feishu"],
         help="数据源类型: excel 或 feishu (默认: feishu)"
+    )
+    parser.add_argument(
+        "--template",
+        type=str,
+        default="jinja2",
+        choices=["jinja2", "legacy"],
+        help="模板引擎: jinja2 (新) 或 legacy (旧) (默认: jinja2)"
     )
     
     args = parser.parse_args()
@@ -60,8 +68,11 @@ def main():
             data = reader.get_all_data()
     
     # 2. 生成网站
-    print("\n2. 生成网站...")
-    generator = WebsiteGenerator(data)
+    print(f"\n2. 使用 {args.template} 模板引擎生成网站...")
+    if args.template == "jinja2":
+        generator = Jinja2WebsiteGenerator(data)
+    else:
+        generator = WebsiteGenerator(data)
     generator.generate_all()
     
     print("\n" + "=" * 60)
@@ -73,6 +84,8 @@ def main():
     print("\n使用Excel数据源:")
     print("   1. 准备好 网站管理.xlsx 文件")
     print("   2. 运行: python generate.py --source excel")
+    print("\n使用旧模板引擎:")
+    print("   python generate.py --template legacy")
 
 
 if __name__ == "__main__":

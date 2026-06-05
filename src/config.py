@@ -15,8 +15,11 @@ if env_file.exists():
                     key, value = line.split('=', 1)
                     os.environ[key.strip()] = value.strip()
 
-# 模板文件目录
+# 模板文件目录（旧的字符串替换方式）
 TEMPLATE_DIR = BASE_DIR / "模板文件" / "template"
+
+# 新的 Jinja2 模板目录
+J2_TEMPLATE_DIR = BASE_DIR / "templates_j2"
 
 # 输出目录
 OUTPUT_DIR = BASE_DIR / "output"
