@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ page_title }} | {{ brand_name }}</title>
+    <meta name="description" content="{{ site_description }}">
+    <meta name="keywords" content="{{ site_keywords }}">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+    <header class="header">
+        {% if top_notice %}
+        <div class="top-notice">{{ top_notice }}</div>
+        {% endif %}
+        <div class="header-logo-row">
+            <div class="logo">
+                <a href="/">
+                    <img src="{{ logo_url }}" alt="{{ brand_name }}">
+                    <h1><a href="/">{{ brand_name }}</a></h1>
+                </a>
+            </div>
+            <div class="mobile-menu" onclick="toggleMobileMenu()">
+                <i class="fas fa-bars"></i>
+            </div>
+        </div>
+        <div class="header-nav-row">
+            <ul class="nav-list">
+                <li><a href="/">Home</a></li>
+                {% for category in categories %}
+                <li><a href="/{{ category.slug }}/"{% if category.slug == current_category_slug %} class="active"{% endif %}>{{ category.title }}</a></li>
+                {% endfor %}
+                {% for page in custom_pages %}
+                <li><a href="/{{ page.slug }}/">{{ page.title }}</a></li>
+                {% endfor %}
+            </ul>
+        </div>
+    </header>
+
+    <main>
+        <section class="section">
+            <div class="container">
+                <h1 class="section-title">{{ category_title }}</h1>
+                {% if products %}
+                <div class="product-grid">
+                    {% for product in products %}
+                    <div class="product-card">
+                        <a href="/{{ product.category_slug }}/{{ product.slug }}/">
+                            <img src="{{ product.image }}" alt="{{ product.title }}" class="product-img">
+                        </a>
+                        <div class="product-info">
+                            <h3 class="product-name">
+                                <a href="/{{ product.category_slug }}/{{ product.slug }}/">{{ product.title }}</a>
+                            </h3>
+                            <p class="product-price">{{ product.price }}</p>
+                            <a href="{{ product.amazon_link }}" target="_blank" class="buy-btn">Buy on Amazon</a>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+                {% else %}
+                <p class="no-products">No products in this category yet.</p>
+                {% endif %}
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <p>{{ copyright_info }}</p>
+    </footer>
+
+    <script src="/script.js"></script>
+</body>
+</html>
